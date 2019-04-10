@@ -1,0 +1,6 @@
+
+
+
+
+GPIO 21 (SDA) BMP280
+GPIO 22 (SCL) BMP280
