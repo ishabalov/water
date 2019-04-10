@@ -5,6 +5,10 @@ Water controller v 2.0
 GPIO 21 (SDA) BMP280
 GPIO 22 (SCL) BMP280
 
+use nc -u 198.128.29.254 18342
+
+for udp communications
+
 */
 
 
@@ -25,7 +29,7 @@ void read_timer();
 uint32_t read_timer_last_millis();
 
 /* BMP280 sensor */
-const unsigned int BMP280_ADDRESS_ALT = 0x76;
+uint8_t BMP280_ADDRESS_ALT = 0x76;
 
 Adafruit_BMP280 bmp; // Use default I2C GPIO: 21(SDA) 22(SCL)
 
@@ -42,9 +46,11 @@ void blink(int count);
 void toggle();
 
 /* UDP Communications */
-const char * ssid = "shabalov5";
-const char * password = "zeRo07grOw=";
-const unsigned int UDP_PORT = 1234;
+//const char * ssid = "shabalov5";
+//const char * password = "zeRo07grOw=";
+const char * ssid = "lbnl-visitor-offsite";
+const char * password = "redpingfreed27";
+const unsigned int UDP_PORT = 18342;
 
 AsyncUDP udp;
 

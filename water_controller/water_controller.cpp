@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <WiFi.h>
 #include <AsyncUDP.h>
 #include <Wire.h>
@@ -25,6 +26,8 @@ void IRAM_ATTR onTimer(){
   // It is safe to use digitalRead/Write here if you want to toggle an output
 }
 
+const unsigned long ALARM_INTERVAL = 100000;
+
 void setup_timer() {
   // Create semaphore to inform us when the timer has fired
   timerSemaphore = xSemaphoreCreateBinary();
@@ -39,7 +42,7 @@ void setup_timer() {
 
   // Set alarm to call onTimer function every second (value in microseconds).
   // Repeat the alarm (third parameter)
-  timerAlarmWrite(timer, 100000, true);
+  timerAlarmWrite(timer, ALARM_INTERVAL , true);
 
   // Start an alarm
   timerAlarmEnable(timer);
