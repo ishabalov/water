@@ -15,18 +15,8 @@ void setup_console() {
 
 /* Timer */
 
-void IRAM_ATTR onTimer(){
-	// Increment the counter and set the time of ISR
-	portENTER_CRITICAL_ISR(&timerMux);
-	isrCounter++;
-	lastIsrAt = millis();
-	portEXIT_CRITICAL_ISR(&timerMux);
-	// Give a semaphore that we can check in the loop
-	xSemaphoreGiveFromISR(timerSemaphore, NULL);
-	// It is safe to use digitalRead/Write here if you want to toggle an output
-}
 
-const unsigned long ALARM_INTERVAL = 100000;
+
 
 void setup_timer() {
 	// Create semaphore to inform us when the timer has fired
@@ -116,10 +106,10 @@ bool isOn = false;
 void blink(int count) {
 	for (int i=0;i<count;i++) {
 		digitalWrite(LED_SIG, HIGH);
-		delay(_on);
+		delay(BLINK_ON);
 		digitalWrite(LED_SIG, LOW);
 		if (i<count-1) {
-			delay(_on);
+			delay(BLINK_ON);
 		}
 	}
 }
@@ -180,7 +170,7 @@ void handleUDPPacket(AsyncUDPPacket& packet) {
 	float temperrature = bmp.readTemperature();
 	float pressure = bmp.readPressure();
 	uint32_t last_timer = read_timer_last_millis();
-	packet.printf(">>%s<<%.2f:%.2f>><<%d>>", packet.data(),temperrature,pressure,last_timer);
+	packet.printf("%s|%.2f|%.2f|%d", packet.data(),temperrature,pressure,last_timer);
 	toggle();
 	blink(1);
 }
