@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:water-2-project-cache
 EELAYER 29 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -2037,6 +2036,69 @@ Wire Wire Line
 	3350 4850 3350 4650
 Wire Wire Line
 	3350 4650 3500 4650
+Text Label 3350 4050 0    50   ~ 0
+IO4
+Text Label 3350 4150 0    50   ~ 0
+IO5
+Text Label 3350 4250 0    50   ~ 0
+IO6
+Text Label 3350 4350 0    50   ~ 0
+IO7
+Text Label 3350 4450 0    50   ~ 0
+IO8
+Text Label 3350 4550 0    50   ~ 0
+IO9
+Text Label 3350 4650 0    50   ~ 0
+IO10
+$Comp
+L other-comp:BMP-280-BREAKOUT U?
+U 1 1 5CB17F36
+P 4200 3000
+F 0 "U?" H 4050 3050 50  0000 L CNN
+F 1 "BMP-280-BREAKOUT" H 4550 2800 50  0000 L CNN
+F 2 "" H 4200 3100 50  0001 C CNN
+F 3 "" H 4200 3100 50  0001 C CNN
+	1    4200 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5CB1B0F7
+P 4550 3100
+F 0 "#PWR?" H 4550 2950 50  0001 C CNN
+F 1 "+3.3V" H 4565 3273 50  0000 C CNN
+F 2 "" H 4550 3100 50  0001 C CNN
+F 3 "" H 4550 3100 50  0001 C CNN
+	1    4550 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5CB1E117
+P 4550 3400
+F 0 "#PWR?" H 4550 3150 50  0001 C CNN
+F 1 "GND" H 4555 3227 50  0000 C CNN
+F 2 "" H 4550 3400 50  0001 C CNN
+F 3 "" H 4550 3400 50  0001 C CNN
+	1    4550 3400
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	3600 3200 3700 3100
+Entry Wire Line
+	3600 3300 3700 3200
+Wire Wire Line
+	3700 3100 3900 3100
+Wire Wire Line
+	3700 3200 3900 3200
+Entry Wire Line
+	3600 3750 3500 3850
+Entry Wire Line
+	3600 3650 3500 3750
+Wire Wire Line
+	3050 3850 3500 3850
+Wire Wire Line
+	3050 3750 3500 3750
 Wire Bus Line
 	6050 2750 6050 4900
 Wire Bus Line
@@ -2053,18 +2115,12 @@ Wire Bus Line
 	9650 800  9650 3450
 Wire Bus Line
 	3600 2750 3600 6250
-Text Label 3350 4050 0    50   ~ 0
-IO4
-Text Label 3350 4150 0    50   ~ 0
-IO5
-Text Label 3350 4250 0    50   ~ 0
-IO6
-Text Label 3350 4350 0    50   ~ 0
-IO7
-Text Label 3350 4450 0    50   ~ 0
-IO8
-Text Label 3350 4550 0    50   ~ 0
-IO9
-Text Label 3350 4650 0    50   ~ 0
-IO10
+Text Label 3700 3100 0    50   ~ 0
+SCL
+Text Label 3700 3200 0    50   ~ 0
+SDA
+Text Label 3350 3850 0    50   ~ 0
+SCL
+Text Label 3350 3750 0    50   ~ 0
+SDA
 $EndSCHEMATC
