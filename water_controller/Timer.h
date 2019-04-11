@@ -10,12 +10,16 @@
 
 #include <Arduino.h>
 
+void IRAM_ATTR staticTimer();
+
 
 class Timer {
 public:
 	Timer();
 	boolean alarmFired();
 	uint32_t readLastAlarmMicros();
+
+	static IRAM_ATTR void interruptionHandler();
 
 private:
 	hw_timer_t* timer = NULL;
@@ -24,7 +28,6 @@ private:
 	volatile SemaphoreHandle_t timerSemaphore;
 	portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 	const unsigned long ALARM_INTERVAL = 100000;
-
 	void IRAM_ATTR onTimer();
 
 };

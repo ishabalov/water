@@ -32,6 +32,3 @@ void Valve::onTimer(uint64_t micros) {
 		off();
 	}
 }
-
-
-

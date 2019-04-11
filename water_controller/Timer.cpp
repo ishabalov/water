@@ -14,7 +14,7 @@ Timer::Timer() {
 	// info).
 	timer = timerBegin(0, 80, true);
 	// Attach onTimer function to our timer.
-	timerAttachInterrupt(timer, &onTimer, true);
+	timerAttachInterrupt(timer, &Timer::interruptionHandler, true);
 	// Set alarm to call onTimer function every second (value in microseconds).
 	// Repeat the alarm (third parameter)
 	timerAlarmWrite(timer, ALARM_INTERVAL , true);
@@ -34,6 +34,7 @@ uint32_t Timer::readLastAlarmMicros() {
 	return ret;
 }
 
+
 void IRAM_ATTR Timer::onTimer(){
 	portENTER_CRITICAL_ISR(&timerMux);
 	this->lastAlarmMicros = micros();
@@ -41,3 +42,10 @@ void IRAM_ATTR Timer::onTimer(){
 	portEXIT_CRITICAL_ISR(&timerMux);
 	xSemaphoreGiveFromISR(timerSemaphore, NULL);
 }
+
+Timer instance;
+
+static IRAM_ATTR void interruptionHandler() { // @suppress("Unused static function")
+	instance.onTimer();
+}
+
