@@ -34,8 +34,7 @@ uint32_t Timer::readLastAlarmMicros() {
 	return ret;
 }
 
-
-void IRAM_ATTR Timer::onTimer(){
+void Timer::onTimer(){
 	portENTER_CRITICAL_ISR(&timerMux);
 	this->lastAlarmMicros = micros();
 	this->counter++;
@@ -43,7 +42,7 @@ void IRAM_ATTR Timer::onTimer(){
 	xSemaphoreGiveFromISR(timerSemaphore, NULL);
 }
 
-Timer instance;
+Timer instance = Timer();
 
 static IRAM_ATTR void interruptionHandler() { // @suppress("Unused static function")
 	instance.onTimer();
