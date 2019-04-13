@@ -45,22 +45,33 @@ void Valve::onTimer(unsigned long nowMilliseconds) {
 	} // otherwise do nothing
 }
 
+// Static member functions
+void Valve::initAllValves() {
+	ALL_VALVES[0]=Valve(VALLVE_0_PIN);
+	ALL_VALVES[1]=Valve(VALLVE_1_PIN);
+	ALL_VALVES[2]=Valve(VALLVE_2_PIN);
+	ALL_VALVES[3]=Valve(VALLVE_3_PIN);
+	ALL_VALVES[4]=Valve(VALLVE_4_PIN);
+	ALL_VALVES[5]=Valve(VALLVE_5_PIN);
+	ALL_VALVES[6]=Valve(VALLVE_6_PIN);
+	ALL_VALVES[7]=Valve(VALLVE_7_PIN);
+	ALL_VALVES[8]=Valve(VALLVE_8_PIN);
+	ALL_VALVES[9]=Valve(VALLVE_9_PIN);
+}
+
 void Valve::resetAllValves() {
 	for (int index=0;index<VALVES_COUNT;index++) {
-		allValves[index].off();
+		Valve::ALL_VALVES[index].off();
 	}
 }
 
-Valve allValves[VALVES_COUNT] = {
-		Valve(VALLVE_0_PIN),
-		Valve(VALLVE_1_PIN),
-		Valve(VALLVE_2_PIN),
-		Valve(VALLVE_3_PIN),
-		Valve(VALLVE_4_PIN),
-		Valve(VALLVE_5_PIN),
-		Valve(VALLVE_6_PIN),
-		Valve(VALLVE_7_PIN),
-		Valve(VALLVE_8_PIN),
-		Valve(VALLVE_9_PIN)
-};
+/*
+ *
+ * See for queue implementation https://www.freertos.org/a00118.html
+ * add task with a loop that wait commands from the queue for ~100ms; if any command taken, execute it immediately.
+ * otherwise do the timing logic; commands will be send into the queue from udp packets handler
+ *
+ *
+ */
+
 

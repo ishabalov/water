@@ -19,14 +19,17 @@ public:
 	void off();
 	void onTimer(unsigned long nowMilliseconds);
 	static void resetAllValves();
+	static void initAllValves();
 
 private:
 	uint8_t pin = 0;
 	unsigned long onStartingFromMillis = 0;
 	unsigned long onDurationMillis = 0;
+
+	// Static structure for array of existing valves
+	static const int VALVES_COUNT = 10;
+	static Valve ALL_VALVES[VALVES_COUNT];
 };
 
-const int VALVES_COUNT = 10;
-Valve allValves[];
 
 #endif /* VALVE_H_ */
