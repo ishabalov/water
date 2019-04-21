@@ -10,7 +10,7 @@
 
 ActLed::ActLed(uint8_t pin):
 	pin(pin),
-	queue(xQueueCreate(10, sizeof(uint8_t))) { // ack led commands queue, 10 commands just in case; ech command is justa number of "blink"
+	queue(xQueueCreate(QUEUE_LENGTH, sizeof(uint8_t))) { // act led commands queue, each command is just a number of "blinks"
 	pinMode (this->pin, OUTPUT);
 	digitalWrite(this->pin, LOW);
 	printf("Setup activity LED, pin=%d\n", pin);

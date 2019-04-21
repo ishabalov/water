@@ -19,6 +19,7 @@ private:
 	const uint8_t pin;
 	const QueueHandle_t queue;
 	static const TickType_t DURATION = 100 / portTICK_RATE_MS; // milliseconds
+	static const int QUEUE_LENGTH = 2;
 };
 
 
