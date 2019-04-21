@@ -8,7 +8,8 @@
 #include "Valve.h"
 #include <Arduino.h>
 
-Valve::Valve(uint8_t pin) {
+Valve::Valve(uint8_t index, uint8_t pin) {
+	this->index = index;
 	this->pin = pin;
 }
 
@@ -22,6 +23,7 @@ void Valve::on(unsigned long startingFrom, unsigned long durationMilliseconds) {
 		digitalWrite(pin, HIGH);
 		onStartingFromMillis = startingFrom;
 		onDurationMillis = durationMilliseconds;
+		printf("Valve [%d] is ON",index);
 	}
 }
 
@@ -29,6 +31,7 @@ void Valve::off() {
 	digitalWrite(this->pin, LOW);
 	onStartingFromMillis = 0;
 	onDurationMillis = 0;
+	printf("Valve [%d] is OFF",index);
 }
 
 void Valve::onTimer(unsigned long nowMilliseconds) {
@@ -46,23 +49,23 @@ void Valve::onTimer(unsigned long nowMilliseconds) {
 }
 
 // Static member functions
-void Valve::initAllValves() {
-	ALL_VALVES[0]=Valve(VALLVE_0_PIN);
-	ALL_VALVES[1]=Valve(VALLVE_1_PIN);
-	ALL_VALVES[2]=Valve(VALLVE_2_PIN);
-	ALL_VALVES[3]=Valve(VALLVE_3_PIN);
-	ALL_VALVES[4]=Valve(VALLVE_4_PIN);
-	ALL_VALVES[5]=Valve(VALLVE_5_PIN);
-	ALL_VALVES[6]=Valve(VALLVE_6_PIN);
-	ALL_VALVES[7]=Valve(VALLVE_7_PIN);
-	ALL_VALVES[8]=Valve(VALLVE_8_PIN);
-	ALL_VALVES[9]=Valve(VALLVE_9_PIN);
+void Valve::initAll() {
+	printf("Init all valves\n");
+	for (int index=0;index<VALVES_COUNT;index++) {
+		Valve v = Valve(VALVES_PINS[index]);
+		v.init();
+		Valve::ALL_VALVES[index]=v;
+		printf("Init valve [%d] pin=%d\n",index,VALVES_PINS[index]);
+	}
+	printf("Init all valves completed\n");
 }
 
-void Valve::resetAllValves() {
+void Valve::resetAll() {
+	printf("reset all valves\n");
 	for (int index=0;index<VALVES_COUNT;index++) {
 		Valve::ALL_VALVES[index].off();
 	}
+	printf("reset all valves completed\n");
 }
 
 /*

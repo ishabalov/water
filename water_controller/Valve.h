@@ -13,21 +13,21 @@
 
 class Valve {
 public:
-	Valve(uint8_t pin);
+	Valve(uint8_t index,uint8_t pin);
 	void init();
 	void on(unsigned long startingFrom, unsigned long durationMilliseconds);
 	void off();
 	void onTimer(unsigned long nowMilliseconds);
-	static void resetAllValves();
-	static void initAllValves();
+	static void resetAll();
+	static void initAll();
 
 private:
+	uint8_t index = 0;
 	uint8_t pin = 0;
 	unsigned long onStartingFromMillis = 0;
 	unsigned long onDurationMillis = 0;
 
 	// Static structure for array of existing valves
-	static const int VALVES_COUNT = 10;
 	static Valve ALL_VALVES[VALVES_COUNT];
 };
 

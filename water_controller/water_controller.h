@@ -24,23 +24,11 @@ Adafruit_BMP280 bmp; // Use default I2C GPIO: 21(SDA) 22(SCL)
 void setup_bmp();
 void read_bmp();
 
-/* GPIO */
-const uint8_t LED_SIG = 2;
-const uint8_t LED_PIN = 19;
-const unsigned long BLINK_ON = 100;
-
-void setup_GPIO();
-void blink(int count);
-void toggle();
 
 /* UDP Communications */
 //const char * ssid = "shabalov5";
 //const char * password = "zeRo07grOw=";
-const char * ssid = "lbnl-visitor-offsite";
-const char * password = "redpingfreed27";
-const unsigned int UDP_PORT = 18342;
 
-AsyncUDP udp;
 
 void setup_wifi();
 void setup_udp_server();

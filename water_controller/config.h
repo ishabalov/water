@@ -10,15 +10,36 @@
 
 #include <Arduino.h>
 
-const uint8_t VALLVE_0_PIN = 19;
-const uint8_t VALLVE_1_PIN = 19;
-const uint8_t VALLVE_2_PIN = 19;
-const uint8_t VALLVE_3_PIN = 19;
-const uint8_t VALLVE_4_PIN = 19;
-const uint8_t VALLVE_5_PIN = 19;
-const uint8_t VALLVE_6_PIN = 19;
-const uint8_t VALLVE_7_PIN = 19;
-const uint8_t VALLVE_8_PIN = 19;
-const uint8_t VALLVE_9_PIN = 19;
+/*
+ * Valves, assigned pin numbers
+ */
+const int VALVES_COUNT = 10;
+const uint8_t VALVES_PINS[VALVES_COUNT] = {25,26,19,23,18,5,10,9,35,34};
+
+/*
+ * Activity led pin
+ */
+const uint8_t ACT_PIN = 2;
+
+/*
+ * BME sensor I2C address
+ */
+const uint8_t BME280_ADDRESS = 0x76; // Use alternative address, default is 0x77, but this mean connection of SDO pin to the ground;
+
+/*
+ * WIFI & UDP Server parameters
+ */
+
+const char* SSID = "shabalov5";
+const char* PASSWORD = "zero07grow=";
+const unsigned int UDP_PORT = 18342;
+
+/*
+ * Internal configuration, do not change it unless needed
+ */
+
+const uint32_t STACK_SIZE = 8192;
+const UBaseType_t PRIORITY = 1;
+
 
 #endif /* CONFIG_H_ */

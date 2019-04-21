@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-libraries=[{"package"\:"esp32","platform"\:"esp32","library"\:"ESP32 Async UDP"},{"package"\:"esp32","platform"\:"esp32","library"\:"WiFi"},{"package"\:"esp32","platform"\:"esp32","library"\:"Wire"},"Adafruit Unified Sensor",{"package"\:"esp32","platform"\:"esp32","library"\:"SPI"},"Adafruit BMP280 Library"]
+libraries=["Adafruit BME280 Library",{"package"\:"esp32","platform"\:"esp32","library"\:"ESP32 Async UDP"},{"package"\:"esp32","platform"\:"esp32","library"\:"WiFi"},{"package"\:"esp32","platform"\:"esp32","library"\:"BluetoothSerial"},{"package"\:"esp32","platform"\:"esp32","library"\:"Wire"},"Adafruit Unified Sensor",{"package"\:"esp32","platform"\:"esp32","library"\:"SPI"},"Adafruit BMP280 Library"]
