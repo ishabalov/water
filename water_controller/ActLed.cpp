@@ -17,7 +17,7 @@ ActLed::ActLed(uint8_t pin):
 }
 
 void ActLed::blink(uint8_t nTimes) {
-	xQueueSend(this->queue,&nTimes,0); // send command to queue, no wait and ignore overflow
+	xQueueSend(queue,&nTimes,0); // send command to queue, no wait and ignore overflows
 }
 
 void ActLed::task(ActLed &inst) {
