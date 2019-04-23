@@ -30,7 +30,7 @@ int Command::parameter_2() {
 
 
 CommandProcessor::CommandProcessor():
-		led(ACT_PIN),
+		led(ACT_LED_PIN),
 		valves({}),
 		queue(xQueueCreate(QUEUE_LENGTH, sizeof(Command))){
 
