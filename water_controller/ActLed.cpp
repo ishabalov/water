@@ -29,7 +29,7 @@ void ActLed::task(ActLed &inst) {
 			countdown = message;
 			digitalWrite(inst.pin, HIGH);
 		} else {
-			// no new command
+			// no new command, just blinking
 			if (digitalRead(inst.pin)) { // ON
 				digitalWrite(inst.pin, LOW);
 				countdown--;
@@ -43,9 +43,9 @@ void ActLed::task(ActLed &inst) {
 }
 
 /*
- * Static objects & methods
+ * Singleton object & non-members methods
  */
-ActLed LED = ActLed(ACT_PIN);
+ActLed LED = ActLed(ACT_LED_PIN);
 void actLedInit() {
 	xTaskCreate((void(*)(void *))&ActLed::task, "Activity LED", STACK_SIZE, &LED, PRIORITY, NULL);
 	printf("Activity LED task created\n");

@@ -13,8 +13,7 @@
 
 class Valve {
 public:
-	Valve(uint8_t index,uint8_t pin);
-	void init();
+	Valve(uint8_t index, uint8_t pin);
 	void on(unsigned long startingFrom, unsigned long durationMilliseconds);
 	void off();
 	void onTimer(unsigned long nowMilliseconds);
@@ -22,8 +21,8 @@ public:
 	static void initAll();
 
 private:
-	uint8_t index = 0;
-	uint8_t pin = 0;
+	const uint8_t index;
+	const uint8_t pin;
 	unsigned long onStartingFromMillis = 0;
 	unsigned long onDurationMillis = 0;
 

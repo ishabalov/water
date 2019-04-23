@@ -12,18 +12,17 @@
 
 class UDPServer {
 public:
-	UDPServer(char* ssid, char* password, uint16_t p, ActLed& led);
+	UDPServer(char* ssid, char* password, uint16_t port);
 private:
+	static const TickType_t DELAY = 1000 / portTICK_RATE_MS;
+
 	const char* ssid;
 	const char* password;
 	const uint16_t port;
-
+	// infrastructure members
 	AsyncUDP udp;
-
-	// Internal links
-	const ActLed& activityLed;
-
 	void setup();
+	static void udpPacketHandler(AsyncUDPPacket& packet);
 };
 
 #endif /* UDPSERVER_H_ */

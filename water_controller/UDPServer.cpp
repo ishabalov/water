@@ -13,11 +13,10 @@
 #include "config.h"
 #include "UDPServer.h"
 
-UDPServer::UDPServer(char* ssid, char* password, uint16_t port, ActLed& led) :
-	ssid(ssid),
-	password(password),
-	port(port),
-	activityLed(led) {
+UDPServer::UDPServer(char* ssid, char* password, uint16_t port) :
+ssid(ssid),
+password(password),
+port(port) {
 	setup();
 }
 
@@ -30,24 +29,20 @@ void UDPServer::setup() {
 	WiFi.begin(ssid, password);
 	while (WiFi.waitForConnectResult() != WL_CONNECTED) {
 		printf("Waiting for WiFi\n");
-		delay(1000);
+		delay(DELAY);
 	}
 	printf("WiFi setup success");
 	while (!udp.listen(port)) {
-		printf("Waiting for UDP bind\n");
-		delay(1000);
+		printf("Waiting for UDP listen\n");
+		delay(DELAY);
 	}
 	printf("UDP Listening on IP: %s\n",WiFi.localIP());
-//		blink(4);
-
-	udp.onPacket((void)(AsyncUDPPacket&){});
-//	udp.onPacket([](AsyncUDPPacket packet) {
-//			handleUDPPacket(packet);
-//	});
-	}
+	//		blink(4);
+	udp.onPacket((AuPacketHandlerFunction)&UDPServer::udpPacketHandler);
+	printf("UDP server setup completed\n");
 }
 
-void handleUDPPacket(AsyncUDPPacket& packet) {
+void UDPServer::udpPacketHandler(AsyncUDPPacket& packet) {
 	Serial.print("UDP Packet Type: ");
 	Serial.print(packet.isBroadcast() ? "Broadcast" : packet.isMulticast() ? "Multicast" : "Unicast");
 	Serial.print(", From: ");
@@ -64,10 +59,10 @@ void handleUDPPacket(AsyncUDPPacket& packet) {
 	Serial.write(packet.data(), packet.length());
 	Serial.println();
 	//reply to the client
-	float temperrature = bmp.readTemperature();
-	float pressure = bmp.readPressure();
-	uint32_t last_timer = read_timer_last_millis();
-	packet.printf("%s|%.2f|%.2f|%d", packet.data(),temperrature,pressure,last_timer);
-	toggle();
-	blink(1);
+	//	float temperrature = bmp.readTemperature();
+	//	float pressure = bmp.readPressure();
+	//	uint32_t last_timer = read_timer_last_millis();
+	//	packet.printf("%s|%.2f|%.2f|%d", packet.data(),temperrature,pressure,last_timer);
+	//	toggle();
+	//	blink(1);
 }

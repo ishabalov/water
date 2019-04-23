@@ -19,7 +19,7 @@ const uint8_t VALVES_PINS[VALVES_COUNT] = {25,26,19,23,18,5,10,9,35,34};
 /*
  * Activity led pin
  */
-const uint8_t ACT_PIN = 2;
+const uint8_t ACT_LED_PIN = 2;
 
 /*
  * BME sensor I2C address

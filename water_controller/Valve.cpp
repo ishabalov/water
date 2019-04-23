@@ -8,14 +8,12 @@
 #include "Valve.h"
 #include <Arduino.h>
 
-Valve::Valve(uint8_t index, uint8_t pin) {
-	this->index = index;
-	this->pin = pin;
-}
-
-void Valve::init() {
+Valve::Valve(uint8_t index, uint8_t pin):
+	index(index),
+	pin(pin) {
 	pinMode (this->pin, OUTPUT);
 	off();
+	printf("Valve [%d] initialized, pin=%d\n",index,pin);
 }
 
 void Valve::on(unsigned long startingFrom, unsigned long durationMilliseconds) {
@@ -52,9 +50,7 @@ void Valve::onTimer(unsigned long nowMilliseconds) {
 void Valve::initAll() {
 	printf("Init all valves\n");
 	for (int index=0;index<VALVES_COUNT;index++) {
-		Valve v = Valve(VALVES_PINS[index]);
-		v.init();
-		Valve::ALL_VALVES[index]=v;
+//		ALL_VALVES[index]=Valve(index,VALVES_PINS[index]);
 		printf("Init valve [%d] pin=%d\n",index,VALVES_PINS[index]);
 	}
 	printf("Init all valves completed\n");
