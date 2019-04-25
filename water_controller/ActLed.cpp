@@ -42,11 +42,12 @@ void ActLed::task(ActLed &inst) {
 	}
 }
 
+
 /*
  * Singleton object & non-members methods
  */
-ActLed LED = ActLed(ACT_LED_PIN);
-void actLedInit() {
-	xTaskCreate((void(*)(void *))&ActLed::task, "Activity LED", STACK_SIZE, &LED, PRIORITY, NULL);
+
+void ActLed::actLedInit(ActLed &instance) {
+	xTaskCreate((void(*)(void *))&ActLed::task, "Activity LED", STACK_SIZE, &instance, PRIORITY, NULL);
 	printf("Activity LED task created\n");
 }

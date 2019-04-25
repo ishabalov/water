@@ -11,6 +11,8 @@
 #include <Arduino.h>
 #include "config.h"
 
+#include "BluetoothSerial.h"
+
 #include "ActLed.h"
 #include "Valve.h"
 
@@ -31,6 +33,7 @@ public:
 private:
 	const ActLed led;
 	const Valve valves[];
+	BluetoothSerial ESP_BT; //Object for Bluetooth
 	const QueueHandle_t queue;
 	static const TickType_t DURATION = 1000 / portTICK_RATE_MS; // milliseconds
 	static const int QUEUE_LENGTH = 2;

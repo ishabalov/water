@@ -33,6 +33,8 @@ CommandProcessor::CommandProcessor():
 		led(ACT_LED_PIN),
 		valves({}),
 		queue(xQueueCreate(QUEUE_LENGTH, sizeof(Command))){
-
+	printf("Init command processor\n");
+	ESP_BT.begin("water"); //Name of your Bluetooth Signal
+	Serial.println("Command processor is initialized");
 }
 

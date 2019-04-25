@@ -11,6 +11,12 @@
 #include <stdint.h>
 #include "config.h"
 
+struct ValveCommand {
+	char verb;
+	uint8_t valveIndex;
+	uint16_t duration;
+};
+
 class Valve {
 public:
 	Valve(uint8_t index, uint8_t pin);

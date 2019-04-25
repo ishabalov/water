@@ -10,6 +10,9 @@
 
 #include <Arduino.h>
 
+/* Console */
+const unsigned int SERIAL_BD = 115200;
+
 /*
  * Valves, assigned pin numbers
  */
@@ -30,9 +33,9 @@ const uint8_t BME280_ADDRESS = 0x76; // Use alternative address, default is 0x77
  * WIFI & UDP Server parameters
  */
 
-const char* SSID = "shabalov5";
-const char* PASSWORD = "zero07grow=";
-const unsigned int UDP_PORT = 18342;
+//const char* SSID = "shabalov5";
+//const char* PASSWORD = "zero07grow=";
+//const unsigned int UDP_PORT = 18342;
 
 /*
  * Internal configuration, do not change it unless needed
