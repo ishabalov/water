@@ -10,6 +10,12 @@
 
 #include <Arduino.h>
 
+class ActLedQueueCommand {
+public:
+	ActLedQueueCommand(uint8_t blinks);
+	const uint8_t blinks;
+};
+
 class ActLed {
 public:
 	ActLed(uint8_t pin);

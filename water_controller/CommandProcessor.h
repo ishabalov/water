@@ -30,7 +30,7 @@ public:
 	CommandProcessor();
 private:
 	const ActLed led;
-	const Valve valves[];
+	const Valve valves[VALVES_COUNT];
 	const QueueHandle_t queue;
 	static const TickType_t DURATION = 1000 / portTICK_RATE_MS; // milliseconds
 	static const int QUEUE_LENGTH = 2;

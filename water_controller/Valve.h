@@ -19,6 +19,8 @@ public:
 	void onTimer(unsigned long nowMilliseconds);
 	static void resetAll();
 	static void initAll();
+	// Static structure for array of existing valves
+	static Valve ALL_VALVES[VALVES_COUNT];
 
 private:
 	const uint8_t index;
@@ -26,8 +28,14 @@ private:
 	unsigned long onStartingFromMillis = 0;
 	unsigned long onDurationMillis = 0;
 
-	// Static structure for array of existing valves
-	static Valve ALL_VALVES[VALVES_COUNT];
+};
+
+class Valves {
+public:
+	Valves();
+	void resetAll();
+private:
+	const Valve valves[VALVES_COUNT];
 };
 
 

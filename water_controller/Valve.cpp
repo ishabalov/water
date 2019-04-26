@@ -46,23 +46,23 @@ void Valve::onTimer(unsigned long nowMilliseconds) {
 	} // otherwise do nothing
 }
 
-// Static member functions
-void Valve::initAll() {
+Valves::Valves() {
 	printf("Init all valves\n");
 	for (int index=0;index<VALVES_COUNT;index++) {
-//		ALL_VALVES[index]=Valve(index,VALVES_PINS[index]);
+		valves[index]=Valve(index,VALVES_PINS[index]);
 		printf("Init valve [%d] pin=%d\n",index,VALVES_PINS[index]);
 	}
 	printf("Init all valves completed\n");
 }
 
-void Valve::resetAll() {
+void Valves::resetAll() {
 	printf("reset all valves\n");
 	for (int index=0;index<VALVES_COUNT;index++) {
 		Valve::ALL_VALVES[index].off();
 	}
 	printf("reset all valves completed\n");
 }
+
 
 /*
  *
