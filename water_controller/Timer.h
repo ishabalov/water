@@ -19,6 +19,7 @@ public:
 	boolean alarmFired();
 	uint32_t readLastAlarmMicros();
 	static IRAM_ATTR void interruptionHandler();
+	void onTimer();
 private:
 	hw_timer_t* timer = NULL;
 	volatile uint64_t counter = 0;
@@ -26,9 +27,6 @@ private:
 	volatile SemaphoreHandle_t timerSemaphore;
 	portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 	const unsigned long ALARM_INTERVAL = 100000;
-
-	void onTimer();
-
 };
 
 

@@ -44,7 +44,7 @@ void Timer::onTimer() {
 
 Timer instance = Timer();
 
-//static IRAM_ATTR void interruptionHandler() { // @suppress("Unused static function")
-//	instance.onTimer();
-//}
+IRAM_ATTR void Timer::interruptionHandler() { // @suppress("Unused static function")
+	instance.onTimer();
+}
 
