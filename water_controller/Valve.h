@@ -41,7 +41,7 @@ public:
 	Valves();
 	void resetAll();
 private:
-	const Valve valves[VALVES_COUNT];
+	Valve valves[];
 };
 
 
