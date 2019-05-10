@@ -8,9 +8,14 @@
 #include "Valve.h"
 #include <Arduino.h>
 
-Valve::Valve(uint8_t index, uint8_t pin) :
-	index(index),
-	pin(pin) {
+Valve::Valve(){
+	this->index=0;
+	this->pin=0;
+};
+
+void Valve::setup(uint8_t index,uint8_t pin) {
+	this->index=index;
+	this->pin=pin;
 	pinMode (this->pin, OUTPUT);
 	off();
 	printf("Valve [%d] initialized, pin=%d\n",index,pin);
@@ -19,27 +24,27 @@ Valve::Valve(uint8_t index, uint8_t pin) :
 void Valve::on(unsigned long startingFrom, unsigned long durationMilliseconds) {
 	if (durationMilliseconds>0) {
 		digitalWrite(pin, HIGH);
-		onStartingFromMillis = startingFrom;
-		onDurationMillis = durationMilliseconds;
+		turnedOnStartingFromMillis = startingFrom;
+		tirnedOnDurationMillis = durationMilliseconds;
 		printf("Valve [%d] is ON",index);
 	}
 }
 
 void Valve::off() {
 	digitalWrite(this->pin, LOW);
-	onStartingFromMillis = 0;
-	onDurationMillis = 0;
+	turnedOnStartingFromMillis = 0;
+	tirnedOnDurationMillis = 0;
 	printf("Valve [%d] is OFF",index);
 }
 
 void Valve::onTimer(unsigned long nowMilliseconds) {
-	if (onStartingFromMillis>0) { // if we are in business
-		if (nowMilliseconds<onStartingFromMillis) {
+	if (turnedOnStartingFromMillis>0) { // if we are in business
+		if (nowMilliseconds<turnedOnStartingFromMillis) {
 			// we have timer overflow here, need to adjust starting time, assuming it = 1, for simplicity
-			onStartingFromMillis = 1; // NOT 0, otherwise we will never turn valve off
+			turnedOnStartingFromMillis = 1; // NOT 0, otherwise we will never turn valve off
 		}
-		unsigned long delta = nowMilliseconds - onStartingFromMillis;
-		if (delta>=onDurationMillis) {
+		unsigned long delta = nowMilliseconds - turnedOnStartingFromMillis;
+		if (delta>=tirnedOnDurationMillis) {
 			// need to turn valve off, interval exceeded
 			off();
 		}
@@ -48,17 +53,17 @@ void Valve::onTimer(unsigned long nowMilliseconds) {
 
 Valves::Valves() {
 	printf("Init all valves\n");
-//	for (int index=0;index<VALVES_COUNT;index++) {
-//		valves[index]=Valve(index,VALVES_PINS[index]);
-//		printf("Init valve [%d] pin=%d\n",index,VALVES_PINS[index]);
-//	}
+	for (int index=0;index<VALVES_COUNT;index++) {
+		valves[index].setup(index,VALVES_PINS[index]);
+		printf("Init valve [%d] pin=%d\n",index,VALVES_PINS[index]);
+	}
 	printf("Init all valves completed\n");
 }
 
 void Valves::resetAll() {
 	printf("reset all valves\n");
 	for (int index=0;index<VALVES_COUNT;index++) {
-		Valve::ALL_VALVES[index].off();
+		valves[index].off();
 	}
 	printf("reset all valves completed\n");
 }

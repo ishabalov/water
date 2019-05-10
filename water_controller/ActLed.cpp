@@ -25,22 +25,22 @@ void ActLed::blink(uint8_t blinks) {
 	xQueueSend(queue,&command,0); // send command to queue, no wait and ignore overflows
 }
 
-void ActLed::task(ActLed &inst) {
+void ActLed::task(ActLed &instance) {
 	uint8_t countdown = 0;
 	ActLedQueueCommand message(0);
 	while (true) {
-		if(xQueueReceive(inst.queue, &message, DURATION)) {
+		if(xQueueReceive(instance.queue, &message, DURATION)) {
 			// got new command
 			countdown = message.blinks;
-			digitalWrite(inst.pin, HIGH);
+			digitalWrite(instance.pin, HIGH);
 		} else {
 			// no new command, just blinking
-			if (digitalRead(inst.pin)) { // ON
-				digitalWrite(inst.pin, LOW);
+			if (digitalRead(instance.pin)) { // ON
+				digitalWrite(instance.pin, LOW);
 				countdown--;
 			} else { // OFF
 				if (countdown>0) {
-					digitalWrite(inst.pin, HIGH);
+					digitalWrite(instance.pin, HIGH);
 				}
 			}
 		}
@@ -52,7 +52,7 @@ void ActLed::task(ActLed &inst) {
  * Singleton object & non-members methods
  */
 
-void ActLed::actLedInit(ActLed &instance) {
+void ActLed::init(ActLed &instance) {
 	xTaskCreate((void(*)(void *))&ActLed::task, "Activity LED", STACK_SIZE, &instance, PRIORITY, NULL);
 	printf("Activity LED task created\n");
 }

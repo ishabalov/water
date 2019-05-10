@@ -19,29 +19,29 @@ struct ValveCommand {
 
 class Valve {
 public:
-	Valve(uint8_t index, uint8_t pin);
+	Valve();
 	void on(unsigned long startingFrom, unsigned long durationMilliseconds);
 	void off();
 	void onTimer(unsigned long nowMilliseconds);
 	static void resetAll();
 	static void initAll();
-	// Static structure for array of existing valves
-	static Valve ALL_VALVES[VALVES_COUNT];
 
 private:
-	const uint8_t index;
-	const uint8_t pin;
-	unsigned long onStartingFromMillis = 0;
-	unsigned long onDurationMillis = 0;
-
+	void setup(uint8_t index,uint8_t pin);
+	uint8_t index;
+	uint8_t pin;
+	unsigned long turnedOnStartingFromMillis = 0;
+	unsigned long tirnedOnDurationMillis = 0;
+	friend class Valves;
 };
 
 class Valves {
 public:
 	Valves();
 	void resetAll();
+	char *getStatus();
 private:
-	Valve valves[];
+	Valve valves[VALVES_COUNT];
 };
 
 

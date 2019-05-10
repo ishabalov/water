@@ -20,8 +20,8 @@ class ActLed {
 public:
 	ActLed(uint8_t pin);
 	void blink(uint8_t nTimes);
-	static void task(ActLed &inst); // called from os Task Handler
-	static void actLedInit(ActLed &instance);
+	static void task(ActLed &instance); // called from os Task Handler
+	static void init(ActLed &instance);
 private:
 	const uint8_t pin;
 	const QueueHandle_t queue;

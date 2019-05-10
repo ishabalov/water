@@ -44,5 +44,6 @@ const uint8_t BME280_ADDRESS = 0x76; // Use alternative address, default is 0x77
 const uint32_t STACK_SIZE = 8192;
 const UBaseType_t PRIORITY = 1;
 
+extern char* WATER_VERSION;
 
 #endif /* CONFIG_H_ */

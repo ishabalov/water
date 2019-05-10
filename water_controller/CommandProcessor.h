@@ -11,30 +11,45 @@
 #include <Arduino.h>
 #include "config.h"
 
-#include "BluetoothSerial.h"
-
 #include "ActLed.h"
 #include "Valve.h"
+//
+//class Command {
+//public:
+//	char verb();
+//	int parameter_1();
+//	int parameter_2();
+//private:
+//	char verb_[1];
+//	char parameter_1_[2];
+//	char parameter_2_[3];
+//};
 
-class Command {
+
+typedef void (*CommandProcessorCallback_t)(char *);
+const int PARSER_BUFFER_SIZE = 32;
+const int CALLBACK_BUFFER_SIZE = 4096;
+
+class CommandProcessorCommand {
 public:
-	char verb();
-	int parameter_1();
-	int parameter_2();
+	CommandProcessorCommand(char *body, CommandProcessorCallback_t callback);
 private:
-	char verb_[1];
-	char parameter_1_[2];
-	char parameter_2_[3];
+	char *body;
+	const CommandProcessorCallback_t callback;
+	friend class CommandProcessorCommandSplit;
+	friend class CommandProcessor;
 };
 
 class CommandProcessor {
 public:
 	CommandProcessor();
+	static void task(CommandProcessor &instance); // called from os Task Handler
+	static void init(CommandProcessor &instance);
 private:
-	const ActLed led;
-	const Valve valves[VALVES_COUNT];
-	BluetoothSerial ESP_BT; //Object for Bluetooth
+	void loadIndex(char *body, char *index[]);
+
 	const QueueHandle_t queue;
+	void processCommand(CommandProcessorCommand &command);
 	static const TickType_t DURATION = 1000 / portTICK_RATE_MS; // milliseconds
 	static const int QUEUE_LENGTH = 2;
 };
