@@ -21,6 +21,10 @@ float BmeSensor::readHumidity() {
 	return this->bme.readHumidity();
 }
 
+void BmeSensor::status(PrintBuffer *buffer) {
+	buffer->printf("Temp.:%3.0f C, press.: %,5.0F P, hum.: %3.0f%\n",readTemperrature(),readPressure(),readHumidity());
+}
+
 void BmeSensor::setup_bme(uint8_t bmeAddress) {
 	Serial.printf("Setup bme sensor begin, using address %x\n",bmeAddress);
 	if (!bme.begin(bmeAddress)) {

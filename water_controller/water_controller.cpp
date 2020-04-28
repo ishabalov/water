@@ -28,6 +28,7 @@ void setup() {
 	setup_console();
 	ActLed::init(LED);
 	CommandProcessor::init(CP);
+	Valves::init(VALVES);
 	LED.blink(3);
 	ESP_BT.begin("water_2.0"); //Name of your Bluetooth Server
 

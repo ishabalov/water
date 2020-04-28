@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "config.h"
+#include "PrintBuffer.h"
 
 struct ValveCommand {
 	char verb;
@@ -22,9 +23,12 @@ public:
 	Valve();
 	void on(unsigned long startingFrom, unsigned long durationMilliseconds);
 	void off();
+	bool isOn();
 	void onTimer(unsigned long nowMilliseconds);
 	static void resetAll();
 	static void initAll();
+	void status(PrintBuffer *buffer);
+	void toggle(ulong interval);
 
 private:
 	void setup(uint8_t index,uint8_t pin);
@@ -39,7 +43,10 @@ class Valves {
 public:
 	Valves();
 	void resetAll();
-	char *getStatus();
+	void status(PrintBuffer *buffer);
+	void toggle(uint8_t valveIndex, ulong interval);
+	static void task(Valves &instance); // called from os Task Handler
+	static void init(Valves &instance);
 private:
 	Valve valves[VALVES_COUNT];
 };

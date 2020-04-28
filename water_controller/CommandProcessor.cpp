@@ -5,8 +5,14 @@
  *      Author: ishabalov
  */
 
+#include <ctype.h>
+
 #include "CommandProcessor.h"
 #include "config.h"
+#include "ActLed.h"
+#include "Valve.h"
+#include "BmeSensor.h"
+
 
 //
 //char Command::verb() {
@@ -31,14 +37,18 @@
 
 extern ActLed LED;
 extern Valves VALVES;
+extern BmeSensor BME;
+
 
 CommandProcessorCommand::CommandProcessorCommand(char *body, CommandProcessorCallback_t callback):
-	body(body),
+	body(strlwr(body)),
 	callback(callback){
 }
 
 CommandProcessor::CommandProcessor():
-	queue(xQueueCreate(QUEUE_LENGTH, sizeof(char*))) {
+	queue(xQueueCreate(QUEUE_LENGTH, sizeof(char*))),
+	callbackBuffer(CALLBACK_BUFFER_SIZE)
+	{
 	printf("Init command processor\n");
 	Serial.println("Command processor is initialized");
 }
@@ -51,30 +61,70 @@ void CommandProcessor::task(CommandProcessor &instance) {
 		}
 	}
 }
-void version(CommandProcessorCommand &command,char *index[]) {
-	char callbackBuffer[CALLBACK_BUFFER_SIZE];
-	sprintf(callbackBuffer,"%s\n",WATER_VERSION);
+/*
+ * Implementations of specific command processor functions
+ */
+void version(CommandProcessorCommand &command,char *index[], PrintBuffer *buffer) {
+	buffer->printf("%s\n",WATER_VERSION);
 }
-void status(CommandProcessorCommand &command,char *index[]) {
-	char callbackBuffer[CALLBACK_BUFFER_SIZE];
-	sprintf(callbackBuffer,"Status:\n",WATER_VERSION);
+void status(CommandProcessorCommand &command,char *index[], PrintBuffer *buffer) {
+	VALVES.status(buffer);
+	BME.status(buffer);
+}
 
+/*
+ * Toggle valve
+ * t(oggle) number [interval]/ t 1
+ */
+const ulong DEFAULT_TOGGLE_INTERVAL = 60000; // 1 min
+void toggleValve(CommandProcessorCommand &command,char *index[], PrintBuffer *buffer) {
+	int valve;
+	ulong interval;
+	if (index[1]!=NULL) {
+		valve = strtol(index[1],NULL,10);
+	} else {
+		buffer->printf("Need to specify valve index\n");
+		return;
+	}
+	if (index[2]!=NULL) {
+		interval = strtol(index[2],NULL,10);
+	} else {
+		interval = DEFAULT_TOGGLE_INTERVAL;
+	}
+	VALVES.toggle(valve,interval);
 }
+
+/**
+ * Turn all valves off
+ */
+void reset(CommandProcessorCommand &command,char *index[], PrintBuffer *buffer) {
+	VALVES.resetAll();
+}
+
+
+/*
+ * Main command processor parser
+ */
+
+/*
+ * Create class/struct to hold buffer and use it
+ */
 void CommandProcessor::processCommand(CommandProcessorCommand &command) {
 	printf("processing command %s\n",command.body);
 	char *index[PARSER_BUFFER_SIZE];
 	loadIndex(command.body,index);
-	bool commandProcessed = false;
+	bool commanError = false;
 	switch (*index[0]) {
-	case 'v':
-	case 'V': version(command,index); commandProcessed = true; break;
-	case 's':
-	case 'S': status(command,index); commandProcessed = true; break;
+	case 'v': version(command,index,&callbackBuffer); break;
+	case 's': status(command,index,&callbackBuffer); break;
+	case 't': toggleValve(command,index,&callbackBuffer); break;
+	case 'r': reset(command,index,&callbackBuffer); break;
+	default: commanError=true; break;
 	}
-	if (commandProcessed) {
-		LED.blink(1);
-	} else {
+	if (commanError) {
 		LED.blink(2);
+	} else {
+		LED.blink(1);
 	}
 }
 bool  isSpace(char c) {
@@ -104,6 +154,10 @@ void  CommandProcessor::loadIndex(char *body, char *index[]){
 			}
 		}
 		body++;
+	}
+	while(currentIndex<PARSER_BUFFER_SIZE) {
+		index[currentIndex]=NULL;
+		currentIndex++;
 	}
 }
 /*

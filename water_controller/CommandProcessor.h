@@ -10,9 +10,8 @@
 
 #include <Arduino.h>
 #include "config.h"
+#include "PrintBuffer.h"
 
-#include "ActLed.h"
-#include "Valve.h"
 //
 //class Command {
 //public:
@@ -27,8 +26,10 @@
 
 
 typedef void (*CommandProcessorCallback_t)(char *);
-const int PARSER_BUFFER_SIZE = 32;
-const int CALLBACK_BUFFER_SIZE = 4096;
+const size_t PARSER_BUFFER_SIZE = 32;
+const size_t CALLBACK_BUFFER_SIZE = 4096;
+
+
 
 class CommandProcessorCommand {
 public:
@@ -47,7 +48,7 @@ public:
 	static void init(CommandProcessor &instance);
 private:
 	void loadIndex(char *body, char *index[]);
-
+	PrintBuffer callbackBuffer;
 	const QueueHandle_t queue;
 	void processCommand(CommandProcessorCommand &command);
 	static const TickType_t DURATION = 1000 / portTICK_RATE_MS; // milliseconds

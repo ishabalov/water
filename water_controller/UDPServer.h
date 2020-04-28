@@ -13,6 +13,8 @@
 class UDPServer {
 public:
 	UDPServer(char* ssid, char* password, uint16_t port);
+	int status(char *callbackBuffer, size_t bufferSize);
+
 private:
 	static const TickType_t DELAY = 1000 / portTICK_RATE_MS;
 

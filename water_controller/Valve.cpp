@@ -21,7 +21,7 @@ void Valve::setup(uint8_t index,uint8_t pin) {
 	printf("Valve [%d] initialized, pin=%d\n",index,pin);
 }
 
-void Valve::on(unsigned long startingFrom, unsigned long durationMilliseconds) {
+void Valve::on(ulong startingFrom, ulong durationMilliseconds) {
 	if (durationMilliseconds>0) {
 		digitalWrite(pin, HIGH);
 		turnedOnStartingFromMillis = startingFrom;
@@ -37,6 +37,10 @@ void Valve::off() {
 	printf("Valve [%d] is OFF",index);
 }
 
+bool Valve::isOn() {
+	return digitalRead(pin);
+}
+
 void Valve::onTimer(unsigned long nowMilliseconds) {
 	if (turnedOnStartingFromMillis>0) { // if we are in business
 		if (nowMilliseconds<turnedOnStartingFromMillis) {
@@ -49,6 +53,23 @@ void Valve::onTimer(unsigned long nowMilliseconds) {
 			off();
 		}
 	} // otherwise do nothing
+}
+void Valve::status(PrintBuffer *buffer) {
+	char *s;
+	if (isOn()) {
+		s="ON";
+	} else {
+		s="OFF";
+	}
+	buffer->printf("Valve[%d] is %s\n",s);
+}
+
+void Valve::toggle(ulong interval) {
+	if (isOn()) {
+		off();
+	} else {
+		on(millis(),interval);
+	}
 }
 
 Valves::Valves() {
@@ -68,6 +89,33 @@ void Valves::resetAll() {
 	printf("reset all valves completed\n");
 }
 
+void Valves::status(PrintBuffer *buffer) {
+	buffer->printf("%d valves\n",VALVES_COUNT);
+	for (int index=0;index<VALVES_COUNT;index++) {
+		valves[index].status(buffer);
+	}
+}
+
+void Valves::toggle(uint8_t valveIndex, ulong interval) {
+
+}
+
+void Valves::task(Valves &instance) {
+	uint8_t countdown = 0;
+	ulong now = millis();
+	for (int index=0;index<VALVES_COUNT;index++) {
+		instance.valves[index].onTimer(now);
+	}
+}
+
+/*
+ * Singleton object & non-members methods
+ */
+
+void Valves::init(Valves &instance) {
+	xTaskCreate((void(*)(void *))&Valves::task, "Valves", STACK_SIZE, &instance, PRIORITY, NULL);
+	printf("Valves task created\n");
+}
 
 /*
  *
